@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hidden Card Game</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-900 text-white flex items-center justify-center h-screen">
+
+<div class="bg-gray-800 p-8 rounded-xl shadow-xl w-96 text-center">
+  <h1 class="text-2xl font-bold mb-4">Hidden Card Game</h1>
+  <p class="text-gray-400 mb-6">Encrypted Onchain Card Demo</p>
+
+  <button onclick="drawCard()" 
+    class="bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 w-full mb-3">
+    Draw Secret Card
+  </button>
+
+  <button onclick="revealCard()" 
+    class="bg-green-600 px-4 py-2 rounded-lg hover:bg-green-700 w-full">
+    Reveal Card
+  </button>
+
+  <p id="status" class="mt-4 text-gray-300"></p>
+</div>
+
+<script>
+let encrypted = null;
+let realCard = null;
+
+function fakeEncrypt(num){
+  return btoa(num + "secretKey");
+}
+
+function fakeDecrypt(str){
+  return atob(str).replace("secretKey","");
+}
+
+function drawCard(){
+  realCard = Math.floor(Math.random()*52)+1;
+  encrypted = fakeEncrypt(realCard);
+  document.getElementById("status").innerText =
+    "Encrypted Card Stored: " + encrypted.substring(0,8)+"...";
+}
+
+function revealCard(){
+  if(!encrypted){
+    alert("Draw card first");
+    return;
+  }
+  const card = fakeDecrypt(encrypted);
+  document.getElementById("status").innerText =
+    "Revealed Card Number: " + card;
+}
+</script>
+
+</body>
+</html>
